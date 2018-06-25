@@ -1,2 +1,30 @@
 1. Invalid String Conversion From CLOB Field Using JDBC THIN Driver (Doc ID 2377078.1) 
-2. 
+2. RECO Process Fails With ORA-603 ORA-3106 In Oracle 12.2 In A Distributed Environment (Doc ID 2368500.1)
+3.  Bug 27899270
+Please check our analysis.
+
+1. Please look into the root cause why ORA-29771 occurred. 
+The root cause for ORA-28771 is , ORA-04031 errors occurring with high memory utilization for "ges resource dynamic" memory allocations. 
+
+2. Please look into the reason why d1ev2 was not responding.
+SHARED POOL EXHAUSTION
+
+3. The root cause of instance2 down.
+SHARED POOL EXHAUSTION
+
+
+The below bug is matching your case, which is still under development.
+
+Bug 27899270 https://bug.oraclecorp.com/pls/bug/webbug_edit.edit_info_top?rptno=27899270 : 12.2 GES RESOURCE DYNAMIC IS TOO HIGH - LEADS TO SHARED POOL EXHAUSTION
+
+Workaround
+===========
+
+The bug engineer provided below workaround as of now.
+
+_lm_share_lock_opt = FALSE
+
+_ges_direct_free_res_type="QQFB"
+
+Bug 27899270 : 12.2 GES RESOURCE DYNAMIC IS TOO HIGH - LEADS TO SHARED POOL EXHAUSTION
+
