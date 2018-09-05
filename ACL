@@ -1,0 +1,1 @@
+exec dbms_network_acl_admin.append_host_ace(host=>'aztrexc3.allianz-tr.local',lower_port=>25,upper_port=>25,ace=>xs$ace_type(privilege_list =>xs$name_list('connect'),principal_name=>'ALZADMIN',principal_type =>xs_acl.ptype_db));
