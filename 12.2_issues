@@ -1,7 +1,7 @@
 1. Invalid String Conversion From CLOB Field Using JDBC THIN Driver (Doc ID 2377078.1) 
 2. RECO Process Fails With ORA-603 ORA-3106 In Oracle 12.2 In A Distributed Environment (Doc ID 2368500.1)
 2  Query Receives ORA-00979: 'not A GROUP BY Expression' After Upgrade to 12.2.0.1 (Doc ID 2449107.1) -ALTER SESSION SET "_optimizer_cbqt_or_expansion" = 'OFF';
-2. 12.2 DB RMAN Backup Generate Large Trace File even though PATCH 27674384 has been installed (Doc ID 2428828.1)
+2. 12.2 DB RMAN Backup Generate Large Trace File even though PATCH 27674384 has been installed (Doc ID 2428828.1 - 2465068.1)
 3.  Bug 27899270  --https://github.com/tanelpoder/tpt-oracle/blob/master/sgastatx.sql
 Please check our analysis.
 
