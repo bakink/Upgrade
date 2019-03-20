@@ -4,6 +4,7 @@
 2. 12.2 DB RMAN Backup Generate Large Trace File even though PATCH 27674384 has been installed (Doc ID 2428828.1 - 2465068.1)
 3. Bug 27899270  --https://github.com/tanelpoder/tpt-oracle/blob/master/sgastatx.sql
 4. query  dba_free_space(tablespace usage) slow after upgrade 12c R2 --http://www.anbob.com/archives/3362.html -EXEC DBMS_STATS.gather_table_stats('SYS','X$KTFBUE');
+5. Disable diagsnap Execute as GI owner. (grid) $GI_HOME/bin/oclumon manage -disable diagsnap
 Please check our analysis.
 
 1. Please look into the root cause why ORA-29771 occurred. 
