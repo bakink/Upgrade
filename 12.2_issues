@@ -5,6 +5,9 @@
 3. Bug 27899270  --https://github.com/tanelpoder/tpt-oracle/blob/master/sgastatx.sql
 4. query  dba_free_space(tablespace usage) slow after upgrade 12c R2 --http://www.anbob.com/archives/3362.html -EXEC DBMS_STATS.gather_table_stats('SYS','X$KTFBUE');
 5. Disable diagsnap Execute as GI owner. (grid) $GI_HOME/bin/oclumon manage -disable diagsnap
+6. bug 24590018 – RAC PERF: SCM0 PROCESS USING 100% CPU
+   Disable DLM statistics collection method: SQL> alter system set "_dlm_stats_collect" = 0 scope = spfile sid = '*';
+   
 Please check our analysis.
 
 1. Please look into the root cause why ORA-29771 occurred. 
