@@ -35,3 +35,27 @@ _ges_direct_free_res_type="QQFB"
 
 Bug 27899270 : 12.2 GES RESOURCE DYNAMIC IS TOO HIGH - LEADS TO SHARED POOL EXHAUSTION
 
+
+
+alter system set "_clusterwide_global_transactions"=FALSE scope=spfile;
+alter system set optimizer_adaptive_plans=FALSE scope=spfile;
+alter system set "_optimizer_gather_feedback"=FALSE scope=spfile;
+alter system set "_optimizer_use_feedback"=FALSE scope=spfile;
+alter system set "_use_adaptive_log_file_sync"=FALSE scope=spfile;
+alter system set "_use_single_log_writer"=TRUE scope=spfile;
+alter system set "_dlm_stats_collect"=0 scope=spfile;
+alter system set "_report_capture_cycle_time"=0 scope=spfile;
+alter system set "_adg_parselock_timeout"=550 sid='*' scope=spfile;
+alter system set "_gc_policy_time"=0 sid='*' scope=spfile;
+alter system set gcs_server_processes=6 sid='*' scope=spfile;
+alter system set "_gc_read_mostly_locking"=false sid='*' scope=spfile;
+alter system set "_lm_sync_timeout"=1200 sid='*' scope=spfile;
+alter system set "_lm_tickets"=5000 sid='*' scope=spfile;
+alter system set result_cache_max_size=0 scope=spfile sid=’*’
+alter system set "_gc_policy_minimum"=15000   scope=both sid=’*’;
+alter system set "_optimizer_adaptive_cursor_sharing" = false scope=both sid=’*’
+alter system set "_optimizer_extended_cursor_sharing_rel" = none scope=both sid=’*’
+alter system set "_optimizer_extended_cursor_sharing"=none scope= both;  
+alter system set "_cursor_obsolete_threshold"=200 scope=both;
+
+
