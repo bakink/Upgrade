@@ -1,0 +1,330 @@
+
+** Varolan Grid Release:  11.2.0.4.XXXXX	==>> 11.2.0.4 te PSU ya gerek var mi? Son PSU uygulamakta fayda var
+NODE1
+
+opacth güncellenir
+
+oracle@delta1:~$ ps -ef | grep pmon  
+  oracle  3937     1   0   Feb 12 ?          56:10 asm_pmon_+ASM1
+  oracle  4604     1   0   Feb 12 ?          73:09 ora_pmon_WFDEV1
+  oracle  4633     1   0   Feb 12 ?          64:04 ora_pmon_SD1
+  oracle  4687     1   0   Feb 12 ?          65:49 ora_pmon_LOGDEV1
+  oracle  4831     1   0   Feb 12 ?          67:45 ora_pmon_INTFRAUD1
+  oracle  4841     1   0   Feb 12 ?          85:56 ora_pmon_OMDMDEV1
+  oracle  4931     1   0   Feb 12 ?          73:10 ora_pmon_SUBEDEV1
+  oracle  5000     1   0   Feb 12 ?          70:19 ora_pmon_ACTWLFDEV1
+  oracle  5244     1   0   Feb 12 ?          62:40 ora_pmon_PREGNXBN1
+  oracle 26507     1   0   May 01 ?          37:41 ora_pmon_EBNKDEV1
+
+ACTWLFDEVS
+EBNKDEVS
+INTFRAUDS
+LOGDEVS
+OMDMDEVS
+PREGNXBNS
+SDS
+SUBEDEVS
+WFDEVS
+
+srvctl relocate service -d KBLIVE -s KBADHOC -i KBLIVE01 -t KBLIVE02 -f
+
+srvctl stop instance -d ACTWLFDEVS -i  ACTWLFDEV1 
+srvctl stop instance -d EBNKDEVS -i  EBNKDEV1
+srvctl stop instance -d INTFRAUDS -i  INTFRAUD1
+srvctl stop instance -d LOGDEVS -i  LOGDEV1
+srvctl stop instance -d OMDMDEVS -i  OMDMDEV1
+srvctl stop instance -d PREGNXBNS -i  PREGNXBN1
+srvctl stop instance -d SDS -i  SD1  
+srvctl stop instance -d SUBEDEVS -i  SUBEDEV1 
+srvctl stop instance -d WFDEVS -i  WFDEV1 
+
+/u01/oracle/11.2.0.4/grid/opatch auto /tmp/30783890/30805461 -oh /u01/oracle/11.2.0.4/grid 
+
+srvctl start instance -d ACTWLFDEVS -i  ACTWLFDEV1 
+srvctl start instance -d EBNKDEVS -i  EBNKDEV1
+srvctl start instance -d INTFRAUDS -i  INTFRAUD1
+srvctl start instance -d LOGDEVS -i  LOGDEV1
+srvctl start instance -d OMDMDEVS -i  OMDMDEV1
+srvctl start instance -d PREGNXBNS -i  PREGNXBN1
+srvctl start instance -d SDS -i  SD1  
+srvctl start instance -d SUBEDEVS -i  SUBEDEV1 
+srvctl start instance -d WFDEVS -i  WFDEV1  
+  
+NODE2
+
+opacth güncellenir
+  
+  oracle  9885     1   0   Feb 09 ?          62:56 asm_pmon_+ASM2
+  oracle 13563 12533   0 13:33:10 pts/6       0:00 grep pmon
+  oracle 10656     1   0   Feb 09 ?          71:09 ora_pmon_WFDEV2
+  oracle 11037     1   0   Feb 09 ?          98:20 ora_pmon_OMDMDEV2
+  oracle  8204     1   0   May 01 ?          37:02 ora_pmon_EBNKDEV2
+  oracle 28939     1   0   Feb 10 ?          65:52 ora_pmon_INTFRAUD2
+  oracle 10664     1   0   Feb 09 ?          69:17 ora_pmon_SD2
+  oracle 10670     1   0   Feb 09 ?          66:02 ora_pmon_PREGNXBN2
+  oracle 10672     1   0   Feb 09 ?          72:48 ora_pmon_SUBEDEV2
+  oracle 10667     1   0   Feb 09 ?          69:31 ora_pmon_ACTWLFDEV2
+  oracle 10663     1   0   Feb 09 ?          72:23 ora_pmon_LOGDEV2
+
+ACTWLFDEVS
+EBNKDEVS
+INTFRAUDS
+LOGDEVS
+OMDMDEVS
+PREGNXBNS
+SDS
+SUBEDEVS
+WFDEVS
+
+srvctl stop instance -d ACTWLFDEVS -i  ACTWLFDEV2 
+srvctl stop instance -d EBNKDEVS -i  EBNKDEV2
+srvctl stop instance -d INTFRAUDS -i  INTFRAUD2
+srvctl stop instance -d LOGDEVS -i  LOGDEV2
+srvctl stop instance -d OMDMDEVS -i  OMDMDEV2
+srvctl stop instance -d PREGNXBNS -i  PREGNXBN2
+srvctl stop instance -d SDS -i  SD2  
+srvctl stop instance -d SUBEDEVS -i  SUBEDEV2 
+srvctl stop instance -d WFDEVS -i  WFDEV2
+
+/u01/oracle/11.2.0.4/grid/OPatch/opatch auto /tmp/30783890/30805461 -oh /u01/oracle/11.2.0.4/grid
+
+srvctl start instance -d ACTWLFDEVS -i  ACTWLFDEV2 
+srvctl start instance -d EBNKDEVS -i  EBNKDEV2
+srvctl start instance -d INTFRAUDS -i  INTFRAUD2
+srvctl start instance -d LOGDEVS -i  LOGDEV2
+srvctl start instance -d OMDMDEVS -i  OMDMDEV2
+srvctl start instance -d PREGNXBNS -i  PREGNXBN2
+srvctl start instance -d SDS -i  SD2  
+srvctl start instance -d SUBEDEVS -i  SUBEDEV2 
+srvctl start instance -d WFDEVS -i  WFDEV2
+
+
+
+** Prod (URAL) Grid 19c de RU 19.7.0.0.200414 disinda bir oneoff yok.
+
+** The Grid Infrastructure upgrade is performed in a RAC rolling fashion, this procedure does not require downtime.
+
+** Patches to apply before upgrading Oracle GI and DB to 19c or downgrading to previous release (Doc ID 2539751.1)
+	-- Bugs: 17617807, 21255373  => Fix included in 11.2.0.4.190115 GI PSU
+	-- Managing older database with 19c ASM:
+		=> problem yok
+		
+** 	Upgrade of Grid Infrastructure (GI) to 19c requires 19.6 or latest RU whichever is later (Doc ID 2651143.1)
+
+
+** 19c Grid Infrastructure and Database Upgrade steps for Exadata Database Machine running on Oracle Linux (Doc ID 2542082.1)
+
+
+	================================			
+	== GRID: PRE-UPGRADE:
+	================================	
+		-- mkdir /u01/app/oracle/patchdepot
+		   chmod 770 /u01/app/oracle/patchdepot
+		   
+		-- mkdir -p /u01/oracle/19.0.0/grid
+		   chown grid:oinstall /u01/oracle/19.0.0/grid
+		   
+		-- Unzip Grid installation software
+				[oracle user]
+				unzip -q /u01/app/oracle/patchdepot/V982068-01.zip -d /u01/oracle/19.0.0/grid
+				
+		-- Unzip latest RU patches into the staging area
+				[oracle user]
+				unzip -q /u01/app/oracle/patchdepot/p30501910_190000_Linux-x86-64.zip -d /u01/app/oracle/patchdepot/
+				
+		-- ASM Compatible:
+
+			-- check:
+				ASMCMD> lsattr -G DG_DATA -l %compat*	
+						lsattr -G DG_ARCHVE -l %compat*
+						lsattr -G DG_DELTA_CONFIG -l %compat*
+						lsattr -G DG_REDO -l %compat*			
+
+				oracle@delta1:~$ asmcmd -p
+				ASMCMD [+] > lsattr -G DG_DATA -l %compat*
+				Name              Value       
+				compatible.asm    11.2.0.0.0  
+				compatible.rdbms  10.1.0.0.0  
+				ASMCMD [+] > lsattr -G DG_ARCHVE -l %compat*
+				Name              Value       
+				compatible.asm    11.2.0.0.0  
+				compatible.rdbms  10.1.0.0.0  
+				ASMCMD [+] > lsattr -G DG_DELTA_CONFIG -l %compat*
+				Name              Value       
+				compatible.asm    11.2.0.0.0  
+				compatible.rdbms  10.1.0.0.0  
+				ASMCMD [+] > lsattr -G DG_REDO -l %compat*
+				Name              Value       
+				compatible.asm    11.2.0.0.0  
+				compatible.rdbms  10.1.0.0.0  
+				ASMCMD [+] > 
+						
+			-- advance:
+				ALTER DISKGROUP DG_DATA SET ATTRIBUTE 'compatible.asm' = '11.2.0.4.0';
+				ALTER DISKGROUP DG_ARCHVE SET ATTRIBUTE 'compatible.asm' = '11.2.0.4.0';
+				ALTER DISKGROUP DG_DELTA_CONFIG SET ATTRIBUTE 'compatible.asm' = '11.2.0.4.0';
+				ALTER DISKGROUP DG_REDO SET ATTRIBUTE 'compatible.asm' = '11.2.0.4.0';
+
+				
+		-- Validate Readiness for Oracle Clusterware upgrade using CVU
+				[oracle user]
+				cd /u01/oracle/19.0.0/grid
+				./runcluvfy.sh stage -pre crsinst -upgrade -rolling -src_crshome /u01/oracle/11.2.0.4/grid -dest_crshome /u01/oracle/19.0.0/grid -dest_version 19.0.0.0.0 -fixup -verbose
+
+		--  Change SGA memory settings for ASM		
+				
+				SYS@+ASM1> alter system set sga_max_size = 3G scope=spfile sid='*';
+				SYS@+ASM1> alter system set sga_target = 3G scope=spfile sid='*';
+
+				-- gerekli olursa;
+				SYS@+ASM1> alter system set memory_target=0 sid='*' scope=spfile;
+				SYS@+ASM1> alter system set memory_max_target=0 sid='*' scope=spfile /* required workaround */;
+				SYS@+ASM1> alter system reset memory_max_target sid='*' scope=spfile;
+				SYS@+ASM1> alter system set use_large_pages=true sid='*' scope=spfile /* 11.2.0.2 and later */;		
+
+		-- Verify no active rebalance is running:
+		
+				SYS@+ASM1> select count(*) from gv$asm_operation;
+				
+		-- Verify stack size setting;   /etc/security/limits.conf should look like as shown below.
+
+				oracle   soft stack 10240
+			
+	============================================		
+	== GRID: APPLY RU AND UPGRADE TO 19c:
+	============================================			
+		-- Apply 19c RU or OneOff Patches to the Grid Infrastructure Home AND Start Grid 19c Installation:
+
+				unset ORACLE_HOME ORACLE_BASE ORACLE_SID
+				export DISPLAY=10.5.28.189:0.0
+				
+		--With RU 	/u01/oracle/19.0.0/grid/gridSetup.sh -applyRU /u01/oracle/setup/30899722  -J-Doracle.install.mgmtDB=false -J-Doracle.install.mgmtDB.CDB=false -J Doracle.install.crs.enableRemoteGIMR=false
+				
+		--NoRU	/u01/oracle/19.0.0/grid/gridSetup.sh -J-Doracle.install.mgmtDB=false -J-Doracle.install.mgmtDB.CDB=false -J Doracle.install.crs.enableRemoteGIMR=false
+				
+				
+		-- Select configuration options from the installer screens
+			On "Configuration Options" screen, select "Upgrade Oracle Grid Infrastructure , and then click Next.
+			On "Node Selection" screen, verify all database nodes are shown and selected, and then click Next.
+			On "Management Options" screen, specify Enterprise Management details when choosing for Cloud Control registration.
+			On "Root script execution" screen, do not check the box. Keep root execution in your own control.
+			On "Prerequisite Checks" screen, resolve any failed checks or warnings before continuing. Ignore the warning about "RPM Package Management database".
+			On "Summary" screen, verify the plan and click 'Submit' to start the installation (recommended to save a response file for the next time).
+			On "Install Product" screen monitor the install, until you are requested to run rootupgrade.sh.
+		
+
+		---oracle@delta1:~$ srvctl status service -d OMDMDEVS
+					Service CORE_OMDMDEV is running on instance(s) OMDMDEV2	
+
+				srvctl relocate service -d OMDMDEVS -s CORE_OMDMDEV -i OMDMDEV2 -t OMDMDEV1 –f			
+	
+		-- Execute rootupgrade.sh on each database server
+			Once Node1.
+			Node1 successful bittikten sonra, son node disindaki tum node larda paralel calistirilabilir.
+			Tum node lar successful bittikten sonra son node da calistirilir.	
+				
+			Ilgili Log lar:
+				oo  output of rootupgrade script itself
+				oo  ASM alert.log
+				oo  /u01/app/grid/crsdata/<node_name>/crsconfig/rootcrs_<node_name>_<date_time>.log
+				oo  /u01/oracle/19.0.0/grid/install
+				
+		-- Installer kapatilir
+			
+	================================			
+	== GRID: POST-UPGRADE:
+	================================	
+		-- Verify cluster status;
+			
+				(root)# /u01/oracle/19.0.0/grid/bin/crsctl check cluster -all
+				
+				**************************************************************
+				delta1:
+				CRS-4537: Cluster Ready Services is online
+				CRS-4529: Cluster Synchronization Services is online
+				CRS-4533: Event Manager is online
+				**************************************************************
+				delta2:
+				CRS-4537: Cluster Ready Services is online
+				CRS-4529: Cluster Synchronization Services is online
+				CRS-4533: Event Manager is online
+				**************************************************************
+				
+				(root)# /u01/oracle/19.0.0/grid/bin/crsctl query crs activeversion
+				
+				Oracle Clusterware active version on the cluster is [19.0.0.0.0]
+
+		-- Verify Flex ASM Cardinality is set to "ALL"
+		
+				(oracle)$ srvctl modify asm -count ALL
+				
+		-- Perform Inventory update
+		
+				** NODE1:
+				(oracle)$ /u01/oracle/19.0.0/grid/oui/bin/runInstaller -nowait -waitforcompletion -ignoreSysPrereqs -updateNodeList ORACLE_HOME=/u01/oracle/19.0.0/grid "CLUSTER_NODES={server1,server2,server3}" CRS=true LOCAL_NODE=server1
+				
+				** NODE2:
+				(oracle)$ /u01/oracle/19.0.0/grid/oui/bin/runInstaller -nowait -waitforcompletion -ignoreSysPrereqs -updateNodeList ORACLE_HOME=/u01/oracle/19.0.0/grid "CLUSTER_NODES={server1,server2,server3}" CRS=true LOCAL_NODE=server2
+
+				** NODE3:
+				(oracle)$ /u01/oracle/19.0.0/grid/oui/bin/runInstaller -nowait -waitforcompletion -ignoreSysPrereqs -updateNodeList ORACLE_HOME=/u01/oracle/19.0.0/grid "CLUSTER_NODES={server1,server2,server3}" CRS=true LOCAL_NODE=server3
+				
+		-- Advance ASM Compatible Diskgroup Attribute
+		
+				** tum diskgroup lar icin;
+				SYS@+ASM1> ALTER DISKGROUP DATA SET ATTRIBUTE 'compatible.asm' = '19.0.0.0.0';
+				SYS@+ASM1> ALTER DISKGROUP DATA SET ATTRIBUTE 'compatible.advm' = '19.0.0.0.0';			
+					
+				ALTER DISKGROUP DG_DATA SET ATTRIBUTE 'compatible.asm' = '19.0.0.0.0';
+				ALTER DISKGROUP DG_ARCHVE SET ATTRIBUTE 'compatible.asm' = '19.0.0.0.0';
+				ALTER DISKGROUP DG_DELTA_CONFIG SET ATTRIBUTE 'compatible.asm' = '19.0.0.0.0';
+				ALTER DISKGROUP DG_REDO SET ATTRIBUTE 'compatible.asm' = '19.0.0.0.0';
+				
+				ALTER DISKGROUP DG_DATA SET ATTRIBUTE 'compatible.advm' = '19.0.0.0.0';
+				ALTER DISKGROUP DG_ARCHVE SET ATTRIBUTE 'compatible.advm' = '19.0.0.0.0';
+				ALTER DISKGROUP DG_DELTA_CONFIG SET ATTRIBUTE 'compatible.advm' = '19.0.0.0.0';
+				ALTER DISKGROUP DG_REDO SET ATTRIBUTE 'compatible.advm' = '19.0.0.0.0';
+				
+				
+		-- For 11.2 release, move the password file to ASM after Upgrade
+		
+				[oracle]$ srvctl config asm
+				ASM home: <CRS home>
+				Password file: /u01/oracle/19.0.0/grid/dbs/orapw+ASM
+				Backup of Password file:
+				ASM listener: LISTENER
+				ASM instance count: ALL
+				Cluster ASM listener: ASMNET1LSNR_ASM
+
+			!!!	<+ASM1> pwcopy --asm /u01/oracle/19.0.0/grid/dbs/orapw+ASM +DG_DATA/orapwasm
+
+
+
+
+
+**********************************************
+
+
+2. nodedaki rootupgrade.sh aşağıdaki hatayı vererek kesiliyordu. Crs’I –noautostart ile başlatmaya çalışıyordu ama 11.2.0.4 te böyle bir başlatma şekli yok.
+Yaptığım araştırmada bunun bir bug olduğu ve 19.7 de çözüldüğü söyleniyordu fakat bizde 19.7 olmamıza ragmen bu bug a çarptık.
+Hatanın kaynağının eski homedan haip iplerini alırken timeout a düşmesi olarak yazıyordu. Workaround olarak timeout süresini 60tan 120 çıakrınca çözüldüğü söylenmiş.
+Fakat o timeout süresinin nereden değiştirileceğini söylememişler J
+
+Sorun /u01/oracle/19.0.0/grid/crs/install/s_crsutils.pm paketindeki 1066 nolu aşağıdaki satır nedeniyle oluyordu.
+Bende kendi workaroundumu yapıp kodun içinden noautostart kısmını çıkardım. Sonuç itibariyle işe yaradı ve rootupgrade.sh başarılı bitti.
+
+
+
+öncesi
+1064           # Fix bug 27094352
+  1065           trace("Start the OHASD with no autostart");
+  1066           @output = system_cmd_capture($crsctl, 'start', 'has', '-noautostart');
+  1067           $status = shift @output;
+
+Sonrası 
+
+1064           # Fix bug 27094352
+  1065           trace("Start the OHASD with no autostart");
+  1066           @output = system_cmd_capture($crsctl, 'start', 'has');
+  1067           $status = shift @output;
+
