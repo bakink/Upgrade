@@ -1,0 +1,50 @@
+Önce Opatch i taşı sonrası aşağodaki gibi:
+
+#############################################AUTO###################################################
+
+/u01/oracle/11.2.0.4/grid
+
+/u01/oracle/setup/30783890/30805461/
+
+/u01/oracle/11.2.0.4/grid/OPatch/opatch auto /u01/oracle/setup/30783890/30805461 -oh /u01/oracle/11.2.0.4/grid
+
+
+
+###########################################MANUAL####################################################
+
+Run the pre root script. If this is a GI Home, as the root user execute:
+# /u01/oracle/11.2.0.4/grid/crs/install/rootcrs.pl -unlock
+
+Apply the CRS patch using (Generate response file, if needed, using the emocmrsp and specify using -ocmrf option) As the GI home owner execute:
+$ /u01/oracle/11.2.0.4/grid/OPatch/opatch napply -oh /u01/oracle/11.2.0.4/grid -local /u01/oracle/setup/30783890/30805461/29938455
+
+As the GI home owner execute:
+$ /u01/oracle/11.2.0.4/grid/OPatch/opatch napply -oh /u01/oracle/11.2.0.4/grid -local /u01/oracle/setup/30783890/30805461/29509309
+
+As the GI home owner execute:
+$ /u01/oracle/11.2.0.4/grid/OPatch/opatch apply -oh /u01/oracle/11.2.0.4/grid -local /u01/oracle/setup/30783890/30805461/30670774
+
+##############Run the pre script for DB component of the patch. As the database home owner execute:
+##############$ /u01/oracle/setup/30783890/30805461//29938455/custom/server/29938455/custom/scripts/prepatch.sh -dbhome <ORACLE_HOME>
+
+##############Apply the DB patch. As the database home owner execute (Generate response file, if needed, using the emocmrsp and specify using -ocmrf option):
+##############$ <ORACLE_HOME>/OPatch/opatch napply -oh <ORACLE_HOME> -local /u01/oracle/setup/30783890/30805461/29938455/custom/server/29938455
+##############$ <ORACLE_HOME>/OPatch/opatch apply -oh <ORACLE_HOME> -local /u01/oracle/setup/30783890/30805461/30670774
+
+###############Run the post script for DB component of the patch. As the database home owner execute:
+###############$ /u01/oracle/setup/30783890/30805461//29938455/custom/server/29938455/custom/scripts/postpatch.sh -dbhome <ORACLE_HOME>
+
+Run the post script. As the root user execute:
+# /u01/oracle/11.2.0.4/grid/rdbms/install/rootadd_rdbms.sh
+
+If this is a GI Home, as the root user execute:
+# /u01/oracle/11.2.0.4/grid/crs/install/rootcrs.pl -patch
+
+If the message, "A system reboot is recommended before using ACFSï¿½ is shown, then a reboot must be issued before continuing. Failure to do so will result in running with an unpatched ACFS\ADVM\OKS driver.
+Start the CRS managed resources that were earlier running from DB homes. If this is a GI Home environment, as the database home owner execute:
+$ <ORACLE_HOME>/bin/srvctl start home -o <ORACLE_HOME> -s <status file location> -n <node name>
+If this is an Oracle Restart Home environment, as the database home owner execute:
+$ <ORACLE_HOME>/bin/srvctl start home -o <ORACLE_HOME> -s <status file location> 
+Refer Section 2.5, "Patch Post-Installation Instructions" step after installing the patch
+
+
