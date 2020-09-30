@@ -328,3 +328,10 @@ Sonrası
   1066           @output = system_cmd_capture($crsctl, 'start', 'has');
   1067           $status = shift @output;
 
+***************************12c -> 19c
+$GRID_HOME/gpnp/profiles/peer/profile.xml dosyasi var mi bak. 
+Yoksa $GRID_HOME/gpnp/HOSTADI/profiles/peer altondan kopyala --/export/orahome/u01/app/12.2.0.1/grid/gpnp/ykldbtst1/profiles/peer 
+
+
+   6689   my $gpnpprofile = catfile($CFG->OLD_CRS_HOME, 'gpnp', 'profiles', 'peer',
+   6690                             'profile.xml');
