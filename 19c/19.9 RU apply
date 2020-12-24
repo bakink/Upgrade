@@ -1,0 +1,15 @@
+,Root ile
+# /u01/oracle/19.0.0/grid/crs/install/roothas.sh -prepatch
+
+As the GI home owner execute:
+$ /u01/oracle/19.0.0/grid/OPatch/opatch apply -oh /u01/oracle/19.0.0/grid -local /u01/oracle/setup/31750108/31772784
+$ /u01/oracle/19.0.0/grid/OPatch/opatch apply -oh /u01/oracle/19.0.0/grid -local /u01/oracle/setup/31750108/31773437
+$ /u01/oracle/19.0.0/grid/OPatch/opatch apply -oh /u01/oracle/19.0.0/grid -local /u01/oracle/setup/31750108/31771877
+$ /u01/oracle/19.0.0/grid/OPatch/opatch apply -oh /u01/oracle/19.0.0/grid -local /u01/oracle/setup/31750108/31780966 
+
+Root ile
+# /u01/oracle/19.0.0/grid/rdbms/install/rootadd_rdbms.sh
+
+Root ile
+# /u01/oracle/19.0.0/grid/crs/install/roothas.sh -postpatch
+
