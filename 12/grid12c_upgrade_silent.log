@@ -1,0 +1,509 @@
+What happens when upgrade is run with ASM and DB still online?
+
+
+Would not suggest this in PROD environment, but here goes.
+
+
+[oracle@san::grid]$ ps -ef|grep [p]mon
+
+oracle    3147     1  0 07:07 ?        00:00:00 asm_pmon_+ASM
+
+oracle    3224     1  0 07:07 ?        00:00:00 ora_pmon_pdb01
+
+
+From ORACLE_HOME=/u01/app/12.1.0/grid
+
+
+[oracle@san::grid]$ ./runInstaller -silent -ignorePrereq -showProgress -waitforcompletion -force -responseFile /media/sf_Linux/grid12c_upgrade.rsp
+
+
+Starting Oracle Universal Installer...
+
+
+Checking Temp space: must be greater than 120 MB.   Actual 36756 MB    Passed
+
+Checking swap space: must be greater than 150 MB.   Actual 8191 MB    Passed
+
+Preparing to launch Oracle Universal Installer from /tmp/OraInstall2013-08-27_07-09-03AM.
+
+Please wait ...
+
+[WARNING] [INS-41808] Possible invalid choice for OSASM Group.
+
+   CAUSE: The name of the group you selected for the OSASM group is commonly used to grant other system privileges (For example: asmdba, asmoper, dba, oper).
+
+   ACTION: Oracle recommends that you designate asmadmin as the OSASM group.
+
+[WARNING] [INS-41809] Possible invalid choice for OSDBA Group.
+
+   CAUSE: The group name you selected as the OSDBA for ASM group is commonly used for Oracle Database administrator privileges.
+
+   ACTION: Oracle recommends that you designate asmdba as the OSDBA for ASM group, and that the group should not be the same group as an Oracle Database OSDBA group.
+
+[WARNING] [INS-41812] OSDBA and OSASM are the same OS group.
+
+   CAUSE: The chosen values for OSDBA group and the chosen value for OSASM group are the same.
+
+   ACTION: Select an OS group that is unique for ASM administrators. The OSASM group should not be the same as the OS groups that grant privileges for Oracle ASM access, or for database administration.
+
+[WARNING] [INS-32018] The selected Oracle home is outside of Oracle base.
+
+   ACTION: Oracle recommends installing Oracle software within the Oracle base directory. Adjust the Oracle home or Oracle base accordingly.
+
+You can find the log of this install session at:
+
+ /u01/app/oraInventory/logs/installActions2013-08-27_07-09-03AM.log
+
+
+Prepare in progress.
+
+..................................................   8% Done.
+
+
+Prepare successful.
+
+
+Copy files in progress.
+
+..................................................   13% Done.
+
+..................................................   25% Done.
+
+..................................................   30% Done.
+
+..................................................   35% Done.
+
+..................................................   40% Done.
+
+..................................................   45% Done.
+
+..................................................   53% Done.
+
+..................................................   58% Done.
+
+..................................................   63% Done.
+
+..................................................   68% Done.
+
+....................
+
+Copy files successful.
+
+
+Link binaries in progress.
+
+..........
+
+Link binaries successful.
+
+
+Setup files in progress.
+
+..................................................   73% Done.
+
+..........
+
+Setup files successful.
+
+
+Setup Inventory in progress.
+
+
+Setup Inventory successful.
+
+..................................................   80% Done.
+
+
+Finish Setup successful.
+
+The installation of Oracle Grid Infrastructure 12c was successful.
+
+Please check '/u01/app/oraInventory/logs/silentInstall2013-08-27_07-09-03AM.log' for more details.
+
+
+Prepare for configuration steps in progress.
+
+
+Prepare for configuration steps successful.
+
+..................................................   85% Done.
+
+
+Update Inventory in progress.
+
+
+Update Inventory successful.
+
+..................................................   95% Done.
+
+
+As a root user, execute the following script(s):
+
+        1. /u01/app/12.1.0/grid/rootupgrade.sh
+
+
+
+..................................................   100% Done.
+
+Successfully Setup Software.
+
+As install user, execute the following script to complete the configuration.
+
+        1. /u01/app/12.1.0/grid/cfgtoollogs/configToolAllCommands RESPONSE_FILE=<response_file>
+
+
+---------- Beg Comments and not part to log ----------
+
+The response file contains related ASM passwords.
+
+cat pw.rsp
+
+oracle.assistants.asm|S_ASMPASSWORD=oracle_4U
+
+oracle.assistants.asm|S_ASMMONITORPASSWORD=oracle_4U
+
+---------- End Comments and not part to log ----------
+
+
+        Note:
+
+        1. This script must be run on the same host from where installer was run.
+
+        2. This script needs a small password properties file for configuration assistants that require passwords (refer to install guide documentation).
+
+
+
+[oracle@san::grid]$ ps -ef|grep [p]mon
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+[root@san ~]# /u01/app/12.1.0/grid/rootupgrade.sh
+
+Check /u01/app/12.1.0/grid/install/root_san.localdomain_2013-08-27_07-12-26.log for the output of root script
+
+
+[root@san ~]# cat /u01/app/12.1.0/grid/install/root_san.localdomain_2013-08-27_07-12-26.log
+
+Performing root user operation for Oracle 12c
+
+
+The following environment variables are set as:
+
+    ORACLE_OWNER= oracle
+
+    ORACLE_HOME=  /u01/app/12.1.0/grid
+
+   Copying dbhome to /usr/local/bin ...
+
+   Copying oraenv to /usr/local/bin ...
+
+   Copying coraenv to /usr/local/bin ...
+
+
+Entries will be added to the /etc/oratab file as needed by
+
+Database Configuration Assistant when a database is created
+
+Finished running generic part of root script.
+
+Now product-specific root actions will be performed.
+
+Using configuration parameter file: /u01/app/12.1.0/grid/crs/install/crsconfig_params
+
+
+ASM Configuration upgraded successfully.
+
+
+Creating OCR keys for user 'oracle', privgrp 'oinstall'..
+
+Operation successful.
+
+LOCAL ONLY MODE
+
+Successfully accumulated necessary OCR keys.
+
+Creating OCR keys for user 'root', privgrp 'root'..
+
+Operation successful.
+
+CRS-4664: Node san successfully pinned.
+
+2013/08/27 07:14:18 CLSRSC-329: Replacing Clusterware entries in file 'oracle-ohasd.conf'
+
+
+2013/08/27 07:18:02 CLSRSC-329: Replacing Clusterware entries in file 'oracle-ohasd.conf'
+
+
+
+san     2013/08/27 07:22:11     /u01/app/12.1.0/grid/cdata/san/backup_20130827_072211.olr
+
+
+san     2013/08/25 13:46:00     /u01/app/11.2.0.3/grid/cdata/san/backup_20130825_134600.olr
+
+2013/08/27 07:22:42 CLSRSC-327: Successfully configured Oracle Grid Infrastructure for a Standalone Server
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+[oracle@san::grid]$ cat pw.rsp
+
+oracle.assistants.asm|S_ASMPASSWORD=oracle_4U
+
+oracle.assistants.asm|S_ASMMONITORPASSWORD=oracle_4U
+
+
+[oracle@san::grid]$ /u01/app/12.1.0/grid/cfgtoollogs/configToolAllCommands RESPONSE_FILE=/media/sf_Linux/12.2.0.1/grid/pw.rsp
+
+Setting the invPtrLoc to /u01/app/12.1.0/grid/oraInst.loc
+
+
+perform - mode is starting for action: configure
+
+
+Aug 27, 2013 7:26:16 AM oracle.install.driver.oui.UpdateNodelistJob call
+
+INFO: UpdateNodelist data:
+
+Aug 27, 2013 7:26:16 AM oracle.install.driver.oui.UpdateNodelistJob call
+
+INFO: oracle.installer.oui_loc:/u01/app/12.1.0/grid/oui
+
+Aug 27, 2013 7:26:16 AM oracle.install.driver.oui.UpdateNodelistJob call
+
+INFO: oracle.installer.jre_loc:/u01/app/12.1.0/grid/jdk/jre
+
+Aug 27, 2013 7:26:16 AM oracle.install.driver.oui.UpdateNodelistJob call
+
+INFO: oracle.installer.doNotUpdateNodeList:true
+
+Aug 27, 2013 7:26:16 AM oracle.install.driver.oui.UpdateNodelistJob call
+
+INFO: OracleHomeToUpdate:/u01/app/11.2.0.3/grid;isCRS:false;isCFS:false;isLocal:false
+
+Aug 27, 2013 7:26:16 AM oracle.install.driver.oui.UpdateNodelistJob call
+
+INFO: From map: Hosts:[san] => Nodelist:null
+
+Aug 27, 2013 7:26:16 AM oracle.install.driver.oui.UpdateNodelistJob call
+
+INFO: Before calling api: Hosts:[san] => Nodelist:null, update localnode? true
+
+Aug 27, 2013 7:26:20 AM oracle.install.driver.oui.UpdateNodelistJob call
+
+INFO: UpdateNodelist data:
+
+Aug 27, 2013 7:26:20 AM oracle.install.driver.oui.UpdateNodelistJob call
+
+INFO: oracle.installer.oui_loc:/u01/app/12.1.0/grid/oui
+
+Aug 27, 2013 7:26:20 AM oracle.install.driver.oui.UpdateNodelistJob call
+
+INFO: oracle.installer.jre_loc:/u01/app/12.1.0/grid/jdk/jre
+
+Aug 27, 2013 7:26:20 AM oracle.install.driver.oui.UpdateNodelistJob call
+
+INFO: oracle.installer.doNotUpdateNodeList:true
+
+Aug 27, 2013 7:26:20 AM oracle.install.driver.oui.UpdateNodelistJob call
+
+INFO: OracleHomeToUpdate:/u01/app/12.1.0/grid;isCRS:true;isCFS:false;isLocal:false
+
+Aug 27, 2013 7:26:20 AM oracle.install.driver.oui.UpdateNodelistJob call
+
+INFO: From map: Hosts:[san] => Nodelist:null
+
+Aug 27, 2013 7:26:20 AM oracle.install.driver.oui.UpdateNodelistJob call
+
+INFO: Before calling api: Hosts:[san] => Nodelist:null, update localnode? true
+
+
+perform - mode finished for action: configure
+
+
+You can see the log file: /u01/app/12.1.0/grid/cfgtoollogs/oui/configActions2013-08-27_07-26-16-AM.log
+
+
+[oracle@san::grid]$ cat /u01/app/12.1.0/grid/cfgtoollogs/oui/configActions2013-08-27_07-26-16-AM.log
+
+###################################################
+
+The action configuration is performing
+
+------------------------------------------------------
+
+The plug-in Update CRS flag in Inventory is running
+
+
+
+The plug-in Update CRS flag in Inventory has successfully been performed
+
+------------------------------------------------------
+
+------------------------------------------------------
+
+The plug-in Oracle Cluster Verification Utility is running
+
+
+
+Performing post-checks for Oracle Restart configuration
+
+
+Checking Oracle Restart integrity...
+
+
+Oracle Restart integrity check passed
+
+
+Checking OLR integrity...
+
+Check of existence of OLR configuration file "/etc/oracle/olr.loc" passed
+
+Check of attributes of OLR configuration file "/etc/oracle/olr.loc" passed
+
+
+WARNING:
+
+This check does not verify the integrity of the OLR contents.
+
+Execute 'ocrcheck -local' as a privileged user to verify the contents of OLR.
+
+
+OLR integrity check passed
+
+
+Post-check for Oracle Restart configuration was successful.
+
+
+The plug-in Oracle Cluster Verification Utility has successfully been performed
+
+------------------------------------------------------
+
+The action configuration has successfully completed
+
+###################################################
+
+[oracle@san::grid]$
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+[root@san ~]# ocrcheck -local
+
+-bash: ocrcheck: command not found
+
+[root@san ~]# locate ocrcheck
+
+/u01/app/11.2.0.3/grid/.patch_storage/16619898_Jun_24_2013_22_52_45/files/bin/ocrcheck.bin
+
+/u01/app/11.2.0.3/grid/bin/ocrcheck
+
+/u01/app/11.2.0.3/grid/bin/ocrcheck.bin
+
+[root@san ~]# /u01/app/11.2.0.3/grid/bin/ocrcheck -local
+
+Status of Oracle Local Registry is as follows :
+
+         Version                  :          4
+
+         Total space (kbytes)     :     409568
+
+         Used space (kbytes)      :       3208
+
+         Available space (kbytes) :     406360
+
+         ID                       :  799070632
+
+         Device/File Name         : /u01/app/12.1.0/grid/cdata/localhost/san.olr
+
+                                    Device/File integrity check succeeded
+
+
+         Local registry integrity check succeeded
+
+
+         Logical corruption check succeeded
+
+
+[root@san ~]#
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+[oracle@san::grid]$ ps -ef|grep [p]mon
+
+oracle    8133     1  0 07:21 ?        00:00:00 asm_pmon_+ASM
+
+oracle    8212     1  0 07:21 ?        00:00:00 ora_pmon_pdb01
+
+
+[oracle@san::grid]$ . oraenv
+
+ORACLE_SID = [oracle] ? +ASM
+
+The Oracle base remains unchanged with value /u01/app/oracle
+
+
+[oracle@san:+ASM:grid]$ crsctl query has releaseversion
+
+Oracle High Availability Services release version on the local node is [12.1.0.1.0]
+
+
+[oracle@san:+ASM:grid]$ crsctl query has softwareversion
+
+Oracle High Availability Services version on the local node is [12.1.0.1.0]
+
+
+[oracle@san:+ASM:grid]$ crsctl stat res -t
+
+--------------------------------------------------------------------------------
+
+Name           Target  State        Server                   State details
+
+--------------------------------------------------------------------------------
+
+Local Resources
+
+--------------------------------------------------------------------------------
+
+ora.DATA1.dg
+
+               ONLINE  ONLINE       san                      STABLE
+
+ora.asm
+
+               ONLINE  ONLINE       san                      Started,STABLE
+
+ora.ons
+
+               OFFLINE OFFLINE      san                      STABLE
+
+--------------------------------------------------------------------------------
+
+Cluster Resources
+
+--------------------------------------------------------------------------------
+
+ora.cssd
+
+      1        ONLINE  ONLINE       san                      STABLE
+
+ora.diskmon
+
+      1        OFFLINE OFFLINE                               STABLE
+
+ora.evmd
+
+      1        ONLINE  ONLINE       san                      STABLE
+
+ora.pdb01.db
+
+      1        ONLINE  ONLINE       san                      Open,STABLE
+
+--------------------------------------------------------------------------------
+
+[oracle@san:+ASM:grid]$
