@@ -13,3 +13,100 @@ Root ile
 Root ile
 # /u01/oracle/19.0.0/grid/crs/install/roothas.sh -postpatch
 
+
+Merhaba arkadaşlar,
+
+Lazım olur diye GI 19.9 ru installation adımlarını paylaşayım istedim. En azından numaraları bulmakla uğraşmazsınız.
+
+GI HOME:/u01/app/19.0.0.0/grid
+UNZIPPED PATCH LOCATION:/u01/oracle/setup/31750108
+
+
+PatchNumber          Description
+-----------------------------------------------------------
+31771877   |    Database Release Update 19.9.0.0.201020
+          |
+31772784   |    OCW Release Update 19.9.0.0.201020
+          |
+31773437   |    ACFS Release Update 19.9.0.0.201020
+          |
+31780966   |    Tomcat Release Update 19.0.0.0.0
+-----------------------------------------------------------
+
+
+Execute the following on each node of the cluster in non-shared CRS and DB home environment to apply the patch.
+
+1.    Stop the CRS managed resources running from DB homes.
+
+If this is a GI Home environment, as the database home owner execute:
+$ <ORACLE_HOME>/bin/srvctl stop home -o <ORACLE_HOME> -s <status file location> -n <node name>
+
+If this is an Oracle Restart Home environment, as the database home owner execute:
+$ <ORACLE_HOME>/bin/srvctl stop home -o <ORACLE_HOME> -s <status file location>
+
+
+
+Note:
+
+You need to make sure that the Oracle ACFS file systems are unmounted (see Section 2.6) and all other Oracle processes are shutdown before you proceed.
+
+
+
+
+2.    Run the pre root script.
+
+If this is a GI Home, as the root user execute:
+# /u01/app/19.0.0.0/grid/crs/install/rootcrs.sh -prepatch
+
+
+3.    Patch GI home.
+
+As the GI home owner execute:
+$ /u01/app/19.0.0.0/grid/OPatch/opatch apply -oh /u01/app/19.0.0.0/grid -local /u01/oracle/setup/31750108/31772784
+
+$ /u01/app/19.0.0.0/grid/OPatch/opatch apply -oh /u01/app/19.0.0.0/grid -local /u01/oracle/setup/31750108/31773437
+
+$ /u01/app/19.0.0.0/grid/OPatch/opatch apply -oh /u01/app/19.0.0.0/grid -local /u01/oracle/setup/31750108/31771877
+
+$ /u01/app/19.0.0.0/grid/OPatch/opatch apply -oh /u01/app/19.0.0.0/grid -local /u01/oracle/setup/31750108/31780966
+
+                                          4.    Patch DB home.
+                                          
+                                          As the database home owner execute:
+                                          $ /u01/oracle/setup/31750108/%OCW TRACKING BUG%/custom/scripts/prepatch.sh -dbhome <ORACLE_HOME>
+                                          
+                                          $ <ORACLE_HOME>/OPatch/opatch apply -oh <ORACLE_HOME> -local /u01/oracle/setup/31750108/%OCW TRACKING BUG%
+                                          
+                                          $ <ORACLE_HOME>/OPatch/opatch apply -oh <ORACLE_HOME> -local /u01/oracle/setup/31750108/%DB RU TRACKING BUG%
+                                          
+                                          $ /u01/oracle/setup/31750108/%OCW TRACKING BUG%/custom/scripts/postpatch.sh -dbhome <ORACLE_HOME>  
+
+5.    Run the post script.
+
+As the root user execute:
+# /u01/app/19.0.0.0/grid/rdbms/install/rootadd_rdbms.sh
+
+If this is a GI Home, as the root user execute:
+# /u01/app/19.0.0.0/grid/crs/install/rootcrs.sh -postpatch
+
+6.    If the message, "A system reboot is recommended before using ACFS is shown, then a reboot must be issued before continuing. Failure to do so will result in running with an unpatched ACFS\ADVM\OKS driver.
+
+7.    Start the CRS managed resources that were earlier running from DB homes.
+
+If this is a GI Home environment, as the database home owner execute:
+$ <ORACLE_HOME>/bin/srvctl start home -o <ORACLE_HOME> -s <status file location> -n <node name>
+
+If this is an Oracle Restart Home environment, as the database home owner execute:
+$ <ORACLE_HOME>/bin/srvctl start home -o <ORACLE_HOME> -s <status file location> 
+ 
+8. For each database instance running on the Oracle home being patched, run the datapatch utility as described in next table.
+                
+Steps	Single Tenant (non-CDB/PDB)	Steps	Multitenant (CDB/PDB)
+1	% sqlplus /nolog	1	% sqlplus /nolog
+2	SQL> Connect / as sysdba	2	SQL> Connect / as sysdba
+3	SQL> startup	3	SQL> startup
+4	SQL> quit	4	SQL> alter pluggable database all open;Foot 1 
+
+5	% cd $ORACLE_HOME/OPatch	5	SQL> quit
+6	% ./datapatch -verbose	6	% cd $ORACLE_HOME/OPatch
+ 	 		
